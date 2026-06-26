@@ -22,8 +22,9 @@ const signup = async (req, res) => {
     const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '7d' });
     res.status(201).json({ token, user });
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
-  }
+  console.error('Signup error:', err.message);
+  res.status(500).json({ error: err.message });
+}
 };
 
 const login = async (req, res) => {
@@ -43,9 +44,10 @@ const login = async (req, res) => {
     const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '7d' });
     const { password_hash, ...safeUser } = user;
     res.json({ token, user: safeUser });
-  } catch (err) {
-    res.status(500).json({ error: 'Server error' });
-  }
+} catch (err) {
+  console.error('Signup error:', err.message);
+  res.status(500).json({ error: err.message });
+}
 };
 
 module.exports = { signup, login };
